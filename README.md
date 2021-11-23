@@ -1,5 +1,6 @@
 # Visión-artificial
-Tareas y trabajos de visión artificial
+
+Proyecto escaner de documentos visión artificial
 
 Integrantes:
 - Clara Paola Camargo Diaz
