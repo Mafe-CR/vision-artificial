@@ -1,4 +1,4 @@
-# Visión-artificial
+# Visión artificial
 
 Proyecto escaner de documentos visión artificial
 
