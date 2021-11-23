@@ -5,18 +5,18 @@ import os
 
 
 
-def ordenar_puntos(puntos):
-	n_puntos = np.concatenate([puntos[0], puntos[1], puntos[2], puntos[3]]).tolist()
+def ordenar_a(a):
+	x = np.concatenate([a[0], a[1], a[2], a[3]]).tolist()
 
-	y_order = sorted(n_puntos, key=lambda n_puntos: n_puntos[1])
+	eje_y = sorted(x, key=lambda x: x[1])
 
-	x1_order = y_order[:2]
-	x1_order = sorted(x1_order, key=lambda x1_order: x1_order[0])
+	eje_x = eje_y[:2]
+	eje_x = sorted(eje_x, key=lambda eje_x: eje_x[0])
 
-	x2_order = y_order[2:4]
-	x2_order = sorted(x2_order, key=lambda x2_order: x2_order[0])
+	eje_x2 = eje_y[2:4]
+	eje_x2 = sorted(eje_x2, key=lambda eje_x2: eje_x2[0])
 	
-	return [x1_order[0], x1_order[1], x2_order[0], x2_order[1]]
+	return [eje_x[0], eje_x[1], eje_x2[0], eje_x2[1]]
 	
 image = cv2.imread('img0.jpg')
 
@@ -33,14 +33,14 @@ for c in cnts:
 	if len(approx)==4:
 		cv2.drawContours(image, [approx], 0, (0,255,255),2)
 		
-		puntos = ordenar_puntos(approx)
+		a = ordenar_a(approx)
 
-		cv2.circle(image, tuple(puntos[0]), 7, (255,0,0), 2)
-		cv2.circle(image, tuple(puntos[1]), 7, (0,255,0), 2)
-		cv2.circle(image, tuple(puntos[2]), 7, (0,0,255), 2)
-		cv2.circle(image, tuple(puntos[3]), 7, (255,255,0), 2)
+		cv2.circle(image, tuple(a[0]), 7, (255,0,0), 2)
+		cv2.circle(image, tuple(a[1]), 7, (0,255,0), 2)
+		cv2.circle(image, tuple(a[2]), 7, (0,0,255), 2)
+		cv2.circle(image, tuple(a[3]), 7, (255,255,0), 2)
 		
-		pts1 = np.float32(puntos)
+		pts1 = np.float32(a)
 		pts2 = np.float32([[0,0],[270,0],[0,310],[270,310]])
 		M = cv2.getPerspectiveTransform(pts1,pts2)
 		dst = cv2.warpPerspective(gray,M,(270,310))
