@@ -3,8 +3,6 @@ import numpy as np
 from PIL import Image
 import os
 
-
-
 def ordenar_a(a):
 	x = np.concatenate([a[0], a[1], a[2], a[3]]).tolist()
 
@@ -18,27 +16,24 @@ def ordenar_a(a):
 	
 	return [eje_x[0], eje_x[1], eje_x2[0], eje_x2[1]]
 	
-image = cv2.imread('img0.jpg')
-
+image = cv2.imread('img1.jpg')
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 canny = cv2.Canny(gray, 10, 150)
-
 cnts = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:1]
-
 for c in cnts:
-	epsilon = 0.01*cv2.arcLength(c,True)
-	approx = cv2.approxPolyDP(c,epsilon,True)
+	borde = 0.01*cv2.arcLength(c,True)
+	borde2 = cv2.approxPolyDP(c,borde,True)
 	
-	if len(approx)==4:
-		cv2.drawContours(image, [approx], 0, (0,255,255),2)
+	if len(borde2)==4:
+		cv2.drawContours(image, [borde2], 0, (0,187,45),2)
 		
-		a = ordenar_a(approx)
+		a = ordenar_a(borde2)
 
-		cv2.circle(image, tuple(a[0]), 7, (255,0,0), 2)
-		cv2.circle(image, tuple(a[1]), 7, (0,255,0), 2)
-		cv2.circle(image, tuple(a[2]), 7, (0,0,255), 2)
-		cv2.circle(image, tuple(a[3]), 7, (255,255,0), 2)
+		cv2.circle(image, tuple(a[0]), 7, (0,187,45), 2)
+		cv2.circle(image, tuple(a[1]), 7, (0,187,45), 2)
+		cv2.circle(image, tuple(a[2]), 7, (0,187,45), 2)
+		cv2.circle(image, tuple(a[3]), 7, (0,187,45,0), 2)
 		
 		pts1 = np.float32(a)
 		pts2 = np.float32([[0,0],[270,0],[0,310],[270,310]])
@@ -51,7 +46,6 @@ filtro = cv2.GaussianBlur(dst, (0,0), 3)
 filtro = cv2.addWeighted(dst, 1.5, filtro, -0.5, 0)
 filtro2 = cv2.adaptiveThreshold(filtro, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 21, 15)
 cv2.imshow('filtro2', filtro2)
-
 
 cv2.imwrite('imagen.jpg',filtro2)
 
